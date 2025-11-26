@@ -86,14 +86,21 @@ spec:
         stage('Build docker image') {
             steps {
                 container('buildah') {
+                    withCredentials([
+                usernamePassword(
+                    credentialsId: '8c6a5efa-fc5f-4c5f-a6c8-0a0147c33bef', 
+                    usernameVariable: 'DOCKERHUB_USERNAME',
+                    passwordVariable: 'DOCKERHUB_PASSWORD'
+                )
+            ]) {
                     unstash 'builtApp'
                     sh '''
                         echo "Building Docker image..."
-                        ls  -al
-                        ls -al build
-                        cat /etc/os-release
-                        pwd
+                        buildah bud --format=docker -t verb5/frontend:$BUILD_NUMBER -f container/Dockerfile .
+                        buildah login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD docker.io
+                        buildah push verb5/frontend:$BUILD_NUMBER
                     '''
+                }
                 }
             }
         }
