@@ -1,3 +1,20 @@
+def commonPodYaml = '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: debian
+    image: debian:latest
+    command: ['sleep']
+    args: ['infinity']
+  - name: ubuntu
+    image: ubuntu:latest
+    command: ['sleep']
+    args: ['infinity']
+    securityContext:
+      runAsUser: 0
+'''
+
 pipeline {
     agent {
         kubernetes {
@@ -32,6 +49,20 @@ spec:
                     cat /etc/os-release
                 '''
                 }
+        }
+        stage('Using Debian container'){
+            agent {
+                kubernetes {
+                    yaml commonPodYaml
+                    defaultContainer 'debian'
+                }
+            }
+            steps{
+                sh '''
+                    echo "Running inside the Debian container"
+                    cat /etc/os-release
+                '''
+            }
         }
     }
 }
