@@ -32,6 +32,10 @@ spec:
   - name: buildah 
     image: quay.io/buildah/stable:latest 
     command: ['/bin/bash', '-c', 'sleep infinity']
+    securityContext:
+      capabilities:
+        add: ["CAP_SYS_ADMIN"] 
+      runAsUser: 0
   - name: shell
     image: ubuntu
     command:
