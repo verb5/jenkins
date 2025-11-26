@@ -67,13 +67,16 @@ spec:
                     npm ci
                     npm run build
                 '''
+                stash includes: 'build/**', name: 'builtApp'
             }
         }
-        stage('Build docker image'){
+        stage('Build docker image') {
             steps {
+                unstash 'builtApp'
                 sh '''
                     echo "Building Docker image..."
                     ls  -al
+                    ls -al build
                     pwd
                 '''
             }
