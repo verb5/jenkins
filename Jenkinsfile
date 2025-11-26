@@ -54,16 +54,27 @@ spec:
                 }
             }
             steps {
-                script {
-                    if (fileExists('src/main/resources/index.html')) {
-                        echo 'File src/main/resources/index.html found!'
-                    }
-                }
+                // script {
+                //     if (fileExists('src/main/resources/index.html')) {
+                //         echo 'File src/main/resources/index.html found!'
+                //     }
+                // }
                 sh '''
                     echo "Running inside the Debian container"
                     cat /etc/os-release
                     node --version
                     npm --version
+                    npm ci
+                    npm run build
+                '''
+            }
+        }
+        stage('Build docker image'){
+            steps {
+                sh '''
+                    echo "Building Docker image..."
+                    ls  -al
+                    pwd
                 '''
             }
         }
