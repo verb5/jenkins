@@ -54,9 +54,11 @@ spec:
                 }
             }
             steps {
+                script {
                     if (fileExists('src/main/resources/index.html')) {
                         echo 'File src/main/resources/index.html found!'
                     }
+                }
                 sh '''
                     echo "Running inside the Debian container"
                     cat /etc/os-release
