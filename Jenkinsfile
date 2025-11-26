@@ -1,3 +1,13 @@
+def buildahPodYaml = '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: buildah
+    image: quay.io/buildah/stable:latest 
+    command: ['/bin/bash', '-c', 'sleep infinity']
+'''
+
 def commonPodYaml = '''
 apiVersion: v1
 kind: Pod
@@ -72,6 +82,7 @@ spec:
         }
         stage('Build docker image') {
             steps {
+                container('buildah') {
                 unstash 'builtApp'
                 sh '''
                     echo "Building Docker image..."
@@ -79,6 +90,7 @@ spec:
                     ls -al build
                     pwd
                 '''
+            }
             }
         }
     }
