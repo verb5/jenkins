@@ -3,16 +3,12 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: debian
-    image: debian:latest
+  - name: node
+    image: node:25-alpine
     command: ['sleep']
     args: ['infinity']
-  - name: ubuntu
-    image: ubuntu:latest
-    command: ['sleep']
-    args: ['infinity']
-    securityContext:
-      runAsUser: 0
+  securityContext:
+    runAsUser: 0
 '''
 
 pipeline {
@@ -50,17 +46,19 @@ spec:
                 '''
                 }
         }
-        stage('Using Debian container'){
+        stage('Using Node container'){
             agent {
                 kubernetes {
                     yaml commonPodYaml
-                    defaultContainer 'debian'
+                    defaultContainer 'node'
                 }
             }
             steps{
                 sh '''
                     echo "Running inside the Debian container"
                     cat /etc/os-release
+                    node --version
+                    npm --version
                 '''
             }
         }
