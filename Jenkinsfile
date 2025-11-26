@@ -46,14 +46,17 @@ spec:
                 '''
                 }
         }
-        stage('Using Node container'){
+        stage('Using Node container') {
             agent {
                 kubernetes {
                     yaml commonPodYaml
                     defaultContainer 'node'
                 }
             }
-            steps{
+            steps {
+                    if (fileExists('src/main/resources/index.html')) {
+                        echo 'File src/main/resources/index.html found!'
+                    }
                 sh '''
                     echo "Running inside the Debian container"
                     cat /etc/os-release
