@@ -29,6 +29,9 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
+  - name: buildah 
+    image: quay.io/buildah/stable:latest 
+    command: ['/bin/bash', '-c', 'sleep infinity']
   - name: shell
     image: ubuntu
     command:
@@ -83,14 +86,15 @@ spec:
         stage('Build docker image') {
             steps {
                 container('buildah') {
-                unstash 'builtApp'
-                sh '''
-                    echo "Building Docker image..."
-                    ls  -al
-                    ls -al build
-                    pwd
-                '''
-            }
+                    unstash 'builtApp'
+                    sh '''
+                        echo "Building Docker image..."
+                        ls  -al
+                        ls -al build
+                        cat /etc/os-release
+                        pwd
+                    '''
+                }
             }
         }
     }
