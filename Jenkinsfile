@@ -33,8 +33,6 @@ spec:
     image: quay.io/buildah/stable:latest 
     command: ['/bin/bash', '-c', 'sleep infinity']
     securityContext:
-      capabilities:
-        add: ["CAP_SYS_ADMIN"] 
       runAsUser: 0
   - name: shell
     image: ubuntu
@@ -100,7 +98,7 @@ spec:
                     unstash 'builtApp'
                     sh '''
                         echo "Building Docker image..."
-                        buildah bud --format=docker -t verb5/frontend:$BUILD_NUMBER -f container/Dockerfile .
+                        buildah bud --storage-driver=vfs --format=docker -t verb5/frontend:$BUILD_NUMBER -f container/Dockerfile .
                         buildah login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD docker.io
                         buildah push verb5/frontend:$BUILD_NUMBER
                     '''
