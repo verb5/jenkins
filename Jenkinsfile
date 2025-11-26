@@ -27,13 +27,13 @@ spec:
     stages {
         stage('Main') {
             container('shell') {
-            steps {
-                sh '''
+                steps {
+                    sh '''
                     echo "Running inside a Kubernetes Pod"
                     cat /etc/os-release
                 '''
+                }
             }
         }
     }
-}
 }
