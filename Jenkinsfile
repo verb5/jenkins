@@ -33,6 +33,7 @@ spec:
     image: quay.io/buildah/stable:latest
     command: ['/bin/bash', '-c', 'sleep infinity']
     securityContext:
+      privileged: true
       runAsUser: 0
   - name: shell
     image: ubuntu
