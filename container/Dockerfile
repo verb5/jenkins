@@ -1,4 +1,4 @@
-FROM nginxinc/nginx-unprivileged:1.26.0
+FROM docker.io/nginxinc/nginx-unprivileged:1.26.0
 
 COPY build /usr/share/nginx/html
 
